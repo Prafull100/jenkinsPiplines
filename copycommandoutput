@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh "${ssh} jenkins@192.168.1.5 ${mkdir} -p /home/jenkins/prafull"
                 echo "folder of your name is created on jenkins"
-                sh "${scp} /jenkins-node/workspace/copycommandoutput/command.output jenkins@192.168.1.27:/home/jenkins/prafull"
+                sh "${scp} /jenkins-node/workspace/copycommandoutput/command.output jenkins@192.168.1.5:/home/jenkins/prafull"
             }
         }
     }
