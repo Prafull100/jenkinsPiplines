@@ -1,28 +1,34 @@
+// define variables
+def ssh = "/usr/bin/ssh"
+def scp = "/usr/bin/scp"
+def mkdir = "/usr/bin/mkdir"
+
 pipeline {
-  agent {
-    label 'masternodes'
-  }
-  stages {
-    stage('parallel Task A & C') {
-      parallel {
-        stage('Print Job Name & Node Name') {
-          steps {
-            echo "The ${JOB_NAME} run on ${NODE_NAME}"
-            sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > ${WORKSPACE}/myfile.txt'
-          }
+    agent { label 'masternodes' }
+
+    stages {
+        stage('parallel Task A & C') {
+            parallel {
+                stage('Print Job Name & Node Name') {
+                    steps {
+                        sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}"'
+                        echo "the global email is ${var_email}"
+                    }
+                }
+                stage("create file") {
+                    steps {
+                        sh 'ls -la > command.output'
+                        echo "command output is redirected to the command.output file"
+                    }
+                }
+            }
         }
-        stage('Create File') {
-          steps {
-            sh 'cat > command.output'
-          }
+        stage("copy file to jenkins") {
+            steps {
+                sh "${ssh} jenkins@192.168.1.5 ${mkdir} -p /home/jenkins/prafull"
+                echo "folder of your name is created on jenkins"
+                sh "${scp} /jenkins-node/workspace/copycommandoutput/command.output jenkins@192.168.1.27:/home/jenkins/prafull"
+            }
         }
-      }
     }
-    stage('Create Directory & Copy File') {
-      steps {
-        sh 'mkdir -p ${WORKSPACE}/prafull'
-        sh 'cp -fp ${WORKSPACE}/command.output ${WORKSPACE}/prafull'
-      }
-    }
-  }
 }
