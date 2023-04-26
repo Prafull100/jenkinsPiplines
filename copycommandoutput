@@ -8,7 +8,7 @@ pipeline {
         stage('Print Job Name & Node Name') {
           steps {
             echo "The ${JOB_NAME} run on ${NODE_NAME}"
-            sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > /home/node1/prafull/myfile.txt'
+            sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > ${WORKSPACE}/myfile.txt'
           }
         }
         stage('Create File') {
@@ -21,7 +21,7 @@ pipeline {
     stage('Create Directory & Copy File') {
       steps {
         sh 'mkdir -p /home/node1/prafull'
-        sh 'cp -fp /home/node1/workspace/copycommandoutput/command.output /home/node1/prafull'
+        sh 'cp -fp ${WORKSPACE}/command.output ${WORKSPACE}/prafull'
       }
     }
   }
