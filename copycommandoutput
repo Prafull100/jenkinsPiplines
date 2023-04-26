@@ -4,14 +4,18 @@ pipeline {
 	}
 
 	stages {
-  stage('Create File') {
+		stage('Create File') {
 			steps {
 				sh 'cat > command.output'
 			}
 		}
+
 		stage('parallel Task A & C') {
 			parallel {
 				stage('Print Job Name & Node Name') {
+					agent {
+						label 'node1'
+					}
 					steps {
 						echo "The ${JOB_NAME} run on ${NODE_NAME}"
 						sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > ${WORKSPACE}/myfile.txt'
@@ -19,6 +23,9 @@ pipeline {
 				}
 
 				stage('Create Directory & Copy File') {
+					agent {
+						label 'node1'
+					}
 					steps {
 						sh 'mkdir -p ${WORKSPACE}/prafull'
 						sh 'cp -fp ${WORKSPACE}/command.output ${WORKSPACE}/prafull'
