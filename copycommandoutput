@@ -21,7 +21,7 @@ pipeline {
     stage('Create Directory & Copy File') {
       steps {
         sh 'mkdir -p /home/node1/prafull'
-        sh 'cp -fp ${WORKSPACE}/command.output ${WORKSPACE}/prafull'
+        sh 'cp -fp /home/node1/workspace/copycommandoutput/command.output ${WORKSPACE}/prafull'
       }
     }
   }
