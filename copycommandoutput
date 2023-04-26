@@ -8,20 +8,20 @@ pipeline {
         stage('Print Job Name & Node Name') {
           steps {
             echo "The ${JOB_NAME} run on ${NODE_NAME}"
-            bash 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > /home/node1/prafull/myfile.txt'
+            sh 'echo "The ${JOB_NAME} run on ${NODE_NAME}" > /home/node1/prafull/myfile.txt'
           }
         }
         stage('Create File') {
           steps {
-            bash 'cat > command.output'
+            sh 'cat > command.output'
           }
         }
       }
     }
     stage('Create Directory & Copy File') {
       steps {
-        bash 'mkdir -p /home/node1/prafull'
-        bash 'cp -fp /home/node1/workspace/copycommandoutput/command.output /home/node1/prafull'
+        sh 'mkdir -p /home/node1/prafull'
+        sh 'cp -fp /home/node1/workspace/copycommandoutput/command.output /home/node1/prafull'
       }
     }
   }
