@@ -1,0 +1,53 @@
+pipeline {
+    agent {
+        label 'masternodes'
+    }
+     parameters {
+        choice(choices: ['postgresql', 'apache2'], description: 'Choose package', name: 'PACKAGE_NAME')
+  }
+    stages {
+        stage('Check pckname and Install') {
+            steps {
+                script {
+                    def pckname = params.PACKAGE_NAME
+                    check_package(pckname)
+                }
+            }
+        }
+    }
+}
+
+def check_package(pckname) {
+    def installed = sh(returnStatus: true, script: "dpkg -s ${pckname} | grep 'Status: install ok installed'")
+    if (installed == 0) {
+        echo "${pckname} is already installed"
+    } else {
+        echo "Installing package: ${pckname}"
+        sh "sudo apt update && sudo apt install -y ${pckname}"
+        echo "Installation completed successfully for ${pckname}"
+        enable_package(pckname)
+        start_package(pckname)
+    }
+}
+
+def start_package(pckname) {
+    echo "Starting ${pckname} service..."
+    def installed = sh(returnStatus: true, script: "systemctl is-active ${pckname}")
+    if (installed != 0){
+        sh "sudo systemctl start ${pckname}"
+        echo "${pckname} has started and is running."
+    } else {
+        echo "${pckname} is already running."
+    }
+}
+
+def enable_package(pckname) {
+    echo "Enabling ${pckname} service..."
+    def installed = sh(returnStatus: true, script: "systemctl is-enabled ${pckname}")
+    if (installed != 0){
+        sh "sudo systemctl enable ${pckname}"
+        echo "${pckname} service successfully enabled."
+    } else{
+        echo "${pckname} is already enabled."
+    }
+}
