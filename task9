@@ -1,7 +1,7 @@
 pipeline {
   agent any
   parameters {
-    string(name: 'ITEMS', defaultValue: 'one, two, three', description: 'Comma-separated list of items')
+    string(name: 'ITEMS', defaultValue: 'one, two, three, four', description: 'Comma-separated list of items')
     booleanParam(name: 'processAllItems', defaultValue: false, description: 'Process all items?')
   }
   stages {
