@@ -1,0 +1,17 @@
+pipeline {
+    agent {
+    label 'masternodes'
+  }
+
+       stages {
+        stage('Print Build Number and Username') {
+            steps {
+                echo "Build Number: \${BUILD_NUMBER}"
+                echo "Username: \${USER}"
+                echo "Email: \${var_email}"
+                sh 'echo "Build Number: \${BUILD_NUMBER}, Username: \${USER}" > /home/node1/prafull/bildnumberusername.txt'
+                sh 'echo "Email: \${var_email}" >> /home/node1/prafull/bildnumberusername.txt'
+            }
+        }
+    }
+}
