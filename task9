@@ -8,19 +8,21 @@ pipeline {
     stage('Loop Over Items') {
       steps {
         script {
-          def items = params.ITEMS.split(',')
-          for (def i = 0; i < items.size(); i++) {
+          // Check for not null ITEMS parameter
+          def items = params.ITEMS?.trim() ?: throw new IllegalArgumentException("ITEMS parameter is required")
+
+          for (def i = 0; i < items.split(',').size(); i++) {
             def currentItem = params.processAllItems || input(
               id: "itemInput${i + 1}",
-              message: "Do you want to process item ${i + 1}? (${items[i]})",
+              message: "Do you want to process item ${i + 1}? (${items.split(',')[i]})",
               parameters: [
                 booleanParam(defaultValue: false, description: 'Process this item?', name: 'currentItem')
               ]
             )
             if (currentItem) {
-              sh "echo Processing item ${i + 1}: ${items[i]}"
+              sh "echo Processing item ${i + 1}: ${items.split(',')[i]}"
             } else {
-              echo "Skipping item ${i + 1}: ${items[i]}"
+              echo "Skipping item ${i + 1}: ${items.split(',')[i]}"
             }
           }
         }
