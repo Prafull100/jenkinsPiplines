@@ -1,0 +1,17 @@
+@Library('sharedLibrary') _
+
+pipeline {
+  agent {
+    label 'masternodes'
+  }
+  stages {
+    stage('Print Email') {
+      steps {
+        script {
+//          def var_email = "${var_email}"
+          printEmail()
+        }
+      }
+    }
+  }
+}
