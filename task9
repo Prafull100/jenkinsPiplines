@@ -2,27 +2,32 @@ pipeline {
   agent any
   parameters {
     string(name: 'ITEMS', defaultValue: 'one, two, three', description: 'Comma-separated list of items')
-    booleanParam(defaultValue: false, description: 'Process all items?', name: 'processAllItems')
+    booleanParam(name: 'processAllItems', defaultValue: false, description: 'Process all items?')
   }
   stages {
     stage('Loop Over Items') {
       steps {
         script {
           // Check for not null ITEMS parameter
-          def items = params.ITEMS?.trim() ?: throw new IllegalArgumentException("ITEMS parameter is required")
+          def items = params.ITEMS?.trim()
+          if (!items) {
+            throw new IllegalArgumentException("ITEMS parameter is required")
+          }
 
-          for (def i = 0; i < items.split(',').size(); i++) {
+          // Split ITEMS by comma and iterate over each item
+          items.split(',').eachWithIndex { item, i ->
             def currentItem = params.processAllItems || input(
               id: "itemInput${i + 1}",
-              message: "Do you want to process item ${i + 1}? (${items.split(',')[i]})",
+              message: "Do you want to process item ${i + 1}? (${item})",
               parameters: [
-                booleanParam(defaultValue: false, description: 'Process this item?', name: 'currentItem')
+                booleanParam(name: 'currentItem', defaultValue: false, description: 'Process this item?')
               ]
             )
+
             if (currentItem) {
-              sh "echo Processing item ${i + 1}: ${items.split(',')[i]}"
+              sh "echo Processing item ${i + 1}: ${item}"
             } else {
-              echo "Skipping item ${i + 1}: ${items.split(',')[i]}"
+              echo "Skipping item ${i + 1}: ${item}"
             }
           }
         }
