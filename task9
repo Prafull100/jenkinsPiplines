@@ -13,6 +13,12 @@ pipeline {
           if (!items) {
             throw new IllegalArgumentException("ITEMS parameter is required")
           }
+          
+          // Check that the default value has not been changed
+          def defaultValue = 'one, two, three, four'
+          esle if (params.ITEMS?.trim() != defaultValue) {
+            error("The default value for ITEMS parameter must not be changed!")
+          }
 
           // Split ITEMS by comma and iterate over each item
           items.split(',').eachWithIndex { item, i ->
