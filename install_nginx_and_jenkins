@@ -1,16 +1,17 @@
 pipeline {
-    agent {label:masternodes}
+    agent {
+        label 'node2'
+    }
     stages {
-        stage('Ansible Playbook') {
-        agent {label:node2}
+        stage('Checkout') {
             steps {
-                ansiblePlaybook(
-                    playbook: '/etc/opt/playbook/prafull.yml'
-                    extras: '-e "myvar=myval"'
-                )
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Prafull100/jenkinsPiplines.git']])
+            }
+        }
+        stage('Ansible Playbook Execution') {
+            steps {
+                sh 'ansible-playbook $WORKSPACE/install_nginx_and_jenkins.yml'
             }
         }
     }
 }
-
-
