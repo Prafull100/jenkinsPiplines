@@ -64,7 +64,7 @@
       }
 
 - name: Reboot the system
-  shell: reboot
+  shell: sudo reboot
   async: 0
   poll: 0
 
