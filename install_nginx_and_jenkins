@@ -1,11 +1,11 @@
 pipeline {
-    agent label:masternodes
+    agent {label:masternodes}
     stages {
         stage('Ansible Playbook') {
+        agent {label:node2}
             steps {
                 ansiblePlaybook(
-                    playbook: '/path/to/playbook.yml',
-                    inventory: '/path/to/inventory',
+                    playbook: '/etc/opt/playbook/prafull.yml'
                     extras: '-e "myvar=myval"'
                 )
             }
