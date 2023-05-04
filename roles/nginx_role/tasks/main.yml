@@ -62,3 +62,23 @@
               proxy_set_header X-Forwarded-Proto $scheme;
           }
       }
+    notify:
+      - Restart Nginx
+
+- name: Configure Nginx service to start on boot
+  systemd:
+    name: nginx
+    enabled: yes
+    masked: no
+    state: started
+    daemon_reload: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Configure Jenkins service to start on boot
+  systemd:
+    name: jenkins
+    enabled: yes
+    masked: no
+    state: started
+    daemon_reload: yes
+  when: ansible_distribution == "Ubuntu"
