@@ -62,8 +62,6 @@
               proxy_set_header X-Forwarded-Proto $scheme;
           }
       }
-    notify:
-      - Restart Nginx
 
 - name: Configure Nginx service to start on boot
   systemd:
