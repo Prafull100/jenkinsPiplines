@@ -1,0 +1,14 @@
+# handlers file for nginx-jenkins
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Enable Nginx and Jenkins services
+  service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - nginx
+    - jenkins
