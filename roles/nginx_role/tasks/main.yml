@@ -64,10 +64,10 @@
       }
 
 - name: Reboot the system
-    shell: reboot
-    async: 0
-    poll: 0
-    
+  shell: reboot
+  async: 0
+  poll: 0
+
 - name: Configure Nginx service to start on boot
   systemd:
     name: nginx
@@ -85,4 +85,3 @@
     state: started
     daemon_reload: yes
   when: ansible_distribution == "Ubuntu"
-  
