@@ -47,18 +47,3 @@
       notify:
         - Restart Nginx
 
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Enable Nginx and Jenkins services
-      service:
-        name: "{{ item }}"
-        enabled: true
-        state: started
-      loop:
-        - nginx
-        - jenkins
-      when: ansible_distribution == "Ubuntu"
