@@ -63,6 +63,11 @@
           }
       }
 
+- name: Reboot the system
+    shell: reboot
+    async: 0
+    poll: 0
+    
 - name: Configure Nginx service to start on boot
   systemd:
     name: nginx
