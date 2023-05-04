@@ -1,1 +1,15 @@
+pipeline {
+    agent label:masternodes
+    stages {
+        stage('Ansible Playbook') {
+            steps {
+                ansiblePlaybook(
+                    playbook: '/path/to/playbook.yml',
+                    inventory: '/path/to/inventory',
+                    extras: '-e "myvar=myval"'
+                )
+            }
+        }
+    }
+}
 
