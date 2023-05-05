@@ -24,7 +24,7 @@
     - name: Create database backup
       become_user: postgres
       postgresql_backup:
-        db_host: localhost
+        db_host: "{{ src_ip }}"
         db_name: "{{ dbname }}"
         backup_dir: /tmp/
         backup_file_name: "{{ backup_file }}"
@@ -35,15 +35,15 @@
         src: "/tmp/{{ backup_file }}"
         dest: "/tmp/{{ backup_file }}"
         remote_src: yes
+      delegate_to: "{{ src_ip }}"
     # Restore database on destination host
     - name: Restore database
       become_user: postgres
       postgresql_restore:
-        db_host: localhost
+        db_host: "{{ dest_ip }}"
         db_name: "{{ dbname }}"
         restore_file: "/tmp/{{ backup_file }}"
         restore_force: yes
         restore_create_db: yes
         restore_single_db: yes
         restore_drop: yes
-
