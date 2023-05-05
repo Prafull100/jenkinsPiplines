@@ -21,11 +21,15 @@
   become_user: postgres
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
   become: true
+  register: pg_dump_output
+
+- name: Set permissions on backup directory
+  become: true
   file:
     path: /tmp/
     state: directory
     mode: "0777"
-  register: pg_dump_output
+  when: pg_dump_output.rc == 0
 
 - name: Copy backup file to target host
   copy:
