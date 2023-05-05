@@ -47,13 +47,13 @@
   when: pg_dump_output.rc != 0
 
 
-- name: Set permissions on backup directory
-  become: true
-  file:
-    path: /tmp/
-    state: directory
-    mode: "0777"
-  when: pg_dump_output.rc == 0
+# - name: Set permissions on backup directory
+#   become: true
+#   file:
+#     path: /tmp/
+#     state: directory
+#     mode: "0777"
+#   when: pg_dump_output.rc == 0
 
 - name: Copy backup file to target host
   copy:
