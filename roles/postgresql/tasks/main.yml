@@ -39,28 +39,28 @@
 #     owner: "{{ ansible_user | default('postgres') }}"
 #     group: "{{ ansible_user | default('postgres') }}"
     
-- name: Create database backup
-  become_user: postgres
-  shell: pg_dump --format=custom --file=/tmp/abc.backup --dbname=postgres --host=target1@192.168.1.15
-  become: true
-  become_method: sudo
-  become_flags: '-H'
-  environment:
-    ANSIBLE_BECOME_PASSWORD: "password"
-  register: pg_dump_output
-
-- name: Set permissions on backup directory
-  become: true
-  file:
-    path: /tmp/
-    state: directory
-    mode: "777"
-  when: pg_dump_output.rc == 0
-
-
 # - name: Create database backup
 #   become_user: postgres
 #   shell: pg_dump --format=custom --file=/tmp/abc.backup --dbname=postgres --host=target1@192.168.1.15
+#   become: true
+#   become_method: sudo
+#   become_flags: '-H'
+#   environment:
+#     ANSIBLE_BECOME_PASSWORD: "password"
+#   register: pg_dump_output
+
+# - name: Set permissions on backup directory
+#   become: true
+#   file:
+#     path: /tmp/
+#     state: directory
+#     mode: "777"
+#   when: pg_dump_output.rc == 0
+
+
+- name: Create database backup
+  become_user: postgres
+  shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
 
 # - name: Change postgres user password
 #   become_user: postgres
@@ -77,4 +77,4 @@
 
 - name: Restore database on target host
   become_user: postgres
-  shell: pg_restore --verbose --clean --no-acl --no-owner --host=target2@192.168.1.10 --dbname=postgres /tmp/abc.backup
+  shell: pg_restore --verbose --clean --no-acl --no-owner --host=target2@192.168.1.10 --dbname=postgres /tmp/xyz.backup
