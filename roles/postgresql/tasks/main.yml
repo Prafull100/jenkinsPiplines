@@ -38,5 +38,5 @@
   delegate_to: target2@192.168.1.10
 
 - name: Restore database on target host
-  become_user: postgres
+#   become_user: postgres
   shell: pg_restore --verbose --clean --no-acl --no-owner --host=target2@192.168.1.10 --dbname=postgres /tmp/xyz.backup
