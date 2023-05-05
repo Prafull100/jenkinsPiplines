@@ -30,14 +30,14 @@
 #     owner: "{{ ansible_user }}"
 #     group: "{{ ansible_user }}"
 
-- name: Set permissions on temporary directory for postgres user
-  become: true
-  file:
-    path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
-    state: directory
-    mode: "777"
-    owner: "{{ ansible_user | default('postgres') }}"
-    group: "{{ ansible_user | default('postgres') }}"
+# - name: Set permissions on temporary directory for postgres user
+#   become: true
+#   file:
+#     path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
+#     state: directory
+#     mode: "777"
+#     owner: "{{ ansible_user | default('postgres') }}"
+#     group: "{{ ansible_user | default('postgres') }}"
     
 - name: Create database backup
   become_user: postgres
@@ -46,7 +46,7 @@
   become_method: sudo
   become_flags: '-H'
   environment:
-    ANSIBLE_BECOME_PASSWORD: "{{ ansible_become_password }}"
+    ANSIBLE_BECOME_PASSWORD: "password"
   register: pg_dump_output
 
 - name: Set permissions on backup directory
