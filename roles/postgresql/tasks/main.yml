@@ -18,7 +18,7 @@
   notify: restart postgresql
 
 - name: Create database backup
-#   become_user: postgres
+  become_user: target1
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.15
   become: true
   register: pg_dump_output
