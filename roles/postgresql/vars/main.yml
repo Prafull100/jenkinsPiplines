@@ -1,1 +1,4 @@
-fff
+    dbname: mydb
+    dbuser: myuser
+    dbpass: mypassword
+    backup_file: "{{ dbname }}.backup"
