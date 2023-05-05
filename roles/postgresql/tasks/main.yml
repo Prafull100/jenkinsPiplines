@@ -17,10 +17,6 @@
       host    all             all             0.0.0.0/0               md5
   notify: restart postgresql
 
-- name: Show remote user ID
-  debug:
-    var: ansible_user_uid
-
 - name: Set permissions on temporary directory for postgres user
   become: true
   file:
