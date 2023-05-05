@@ -26,6 +26,7 @@
 
 # Create backup of the database on source host
 - name: Create database backup
+  become_user: postgres
   postgresql_restore:
     db_host: "{{ src_ip }}"
     db_name: "{{ dbname }}"
