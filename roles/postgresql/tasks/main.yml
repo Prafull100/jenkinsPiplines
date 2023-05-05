@@ -17,49 +17,13 @@
       host    all             all             0.0.0.0/0               md5
   notify: restart postgresql
 
-# - name: Show remote user ID
-#   debug:
-#     var: ansible_user_uid
-
-# - name: Set permissions on temporary directory for postgres user
-#   become: true
-#   file:
-#     path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
-#     state: directory
-#     mode: "0777"
-#     owner: "{{ ansible_user }}"
-#     group: "{{ ansible_user }}"
-
-# - name: Set permissions on temporary directory for postgres user
-#   become: true
-#   file:
-#     path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
-#     state: directory
-#     mode: "777"
-#     owner: "{{ ansible_user | default('postgres') }}"
-#     group: "{{ ansible_user | default('postgres') }}"
-
-# - name: Create database backup
-#   become_user: postgres
-#   shell: pg_dump --format=custom --file=/tmp/abc.backup --dbname=postgres --host=target1@192.168.1.15
-#   become: true
-#   become_method: sudo
-#   become_flags: '-H'
-#   environment:
-#     ANSIBLE_BECOME_PASSWORD: "password"
-#   register: pg_dump_output
-
-# - name: Set permissions on backup directory
-#   become: true
-#   file:
-#     path: /tmp/
-#     state: directory
-#     mode: "777"
-#   when: pg_dump_output.rc == 0
-
 - name: Create database backup
   become_user: postgres
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
+  become: true
+  register: pg_dump_output
+
+- name: Set permissions on backup directory
   become: true
   file:
     path: /tmp/
@@ -67,16 +31,9 @@
     mode: "0777"
   when: pg_dump_output.rc == 0
 
-# - name: Change postgres user password
-#   become_user: postgres
-#   postgresql_user:
-#     db: postgres
-#     name: postgres
-#     password: password
-
 - name: Copy backup file to target host
   copy:
-    src: /tmp/abc.backup
+    src: /tmp/xyz.backup
     dest: /tmp/
   delegate_to: target2@192.168.1.10
 
