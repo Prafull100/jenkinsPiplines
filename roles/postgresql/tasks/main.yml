@@ -38,7 +38,7 @@
 #     mode: "777"
 #     owner: "{{ ansible_user | default('postgres') }}"
 #     group: "{{ ansible_user | default('postgres') }}"
-    
+
 # - name: Create database backup
 #   become_user: postgres
 #   shell: pg_dump --format=custom --file=/tmp/abc.backup --dbname=postgres --host=target1@192.168.1.15
@@ -57,7 +57,6 @@
 #     mode: "777"
 #   when: pg_dump_output.rc == 0
 
-
 - name: Create database backup
   become_user: postgres
   become: true
@@ -65,8 +64,8 @@
     path: /tmp/
     state: directory
     mode: "0777"
-  when: pg_dump_output.rc == 0
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
+  when: pg_dump_output.rc == 0
 
 # - name: Change postgres user password
 #   become_user: postgres
