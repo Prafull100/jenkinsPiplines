@@ -35,7 +35,7 @@
   file:
     path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
     state: directory
-    mode: "0700"
+    mode: "0777"
     owner: "{{ ansible_user | default('postgres') }}"
     group: "{{ ansible_user | default('postgres') }}"
 
