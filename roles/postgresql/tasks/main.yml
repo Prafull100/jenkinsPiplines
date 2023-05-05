@@ -16,6 +16,13 @@
     block: |
       host    all             all             0.0.0.0/0               md5
   notify: restart postgresql
+  
+  - name: Change postgres user password
+  become_user: postgres
+  postgresql_user:
+    db: postgres
+    name: postgres
+    password: password
 
 - name: Set permissions on temporary directory for postgres user
   become: true
@@ -29,13 +36,6 @@
 - name: Create database backup
   become_user: postgres
   shell: pg_dump --format=custom --file=/tmp/abc.backup --dbname=mydb --host=192.168.1.15
-
-- name: Change postgres user password
-  become_user: postgres
-  postgresql_user:
-    db: postgres
-    name: postgres
-    password: password
 
 - name: Copy backup file to target host
   copy:
