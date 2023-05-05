@@ -64,7 +64,7 @@
   file:
     path: /tmp/
     state: directory
-    mode: "777"
+    mode: "0777"
   when: pg_dump_output.rc == 0
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
 
