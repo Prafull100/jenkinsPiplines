@@ -21,14 +21,14 @@
 #   debug:
 #     var: ansible_user_uid
 
-# - name: Set permissions on temporary directory for postgres user
-#   become: true
-#   file:
-#     path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
-#     state: directory
-#     mode: "0700"
-#     owner: "{{ ansible_user }}"
-#     group: "{{ ansible_user }}"
+- name: Set permissions on temporary directory for postgres user
+  become: true
+  file:
+    path: /run/user/{{ ansible_user_uid }}/ansible-tmp-*
+    state: directory
+    mode: "0777"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
 
 - name: Create database backup
   become_user: postgres
