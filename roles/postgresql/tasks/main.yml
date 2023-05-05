@@ -61,8 +61,11 @@
 - name: Create database backup
   become_user: postgres
   become: true
-  become_method: sudo
-  become_flags: '-H -su /bin/bash -m A+user:postgres:rwx:allow'
+  file:
+    path: /tmp/
+    state: directory
+    mode: "777"
+  when: pg_dump_output.rc == 0
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=target1@192.168.1.15
 
 # - name: Change postgres user password
