@@ -19,13 +19,13 @@
 
 # - name: Create database backup
 # #   become_user: target1
-#   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.15
+#   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.13
 #   become: true
 #   register: pg_dump_output
 
 # - name: Create database backup
 #   become_user: target1
-#   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.15
+#   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.13
 #   become: true
 #   register: pg_dump_output
 
@@ -36,7 +36,7 @@
     mode: "0777"
 
 - name: Create database backup
-  shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.15
+  shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.13
   become: true
   register: pg_dump_output
 
@@ -59,8 +59,8 @@
   copy:
     src: /tmp/abc.backup
     dest: /tmp/
-  delegate_to: target2@192.168.1.10
+  delegate_to: 192.168.1.14
 
 - name: Restore database on target host
 #   become_user: postgres
-  shell: pg_restore --verbose --clean --no-acl --no-owner --host=target2@192.168.1.10 --dbname=postgres /tmp/xyz.backup
+  shell: pg_restore --verbose --clean --no-acl --no-owner --host=192.168.1.14 --dbname=postgres /tmp/xyz.backup
