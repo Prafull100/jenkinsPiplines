@@ -33,7 +33,7 @@
   file:
     path: /tmp
     state: directory
-    mode: "0777"
+    mode: "0755"
 
 - name: Create database backup
   shell: pg_dump --format=custom --file=/tmp/xyz.backup --dbname=postgres --host=192.168.1.13
